@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "downlevelIteration": true,
+    "removeComments": true,
+    "preserveConstEnums": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "types": ["node"],
+    "lib": ["es2015"],
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "build",
+    "baseUrl": ".",
+    "paths": {
+      "#domain/*": [
+        "src/1-domain/*"
+      ],
+      "#application/*": [
+        "src/2-application/*"
+      ],
+      "#infrastructure/*": [
+        "src/3-infrastructure/*"
+      ]
+    }
+  },
+  "exclude": ["**/node_modules"]
+}
