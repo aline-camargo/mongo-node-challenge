@@ -1,6 +1,6 @@
 import User from "#domain/entities/user"
 import { IUserRepository } from "#application/repositories/iUserRepository"
-import { UserModel, UserModelSymbol } from "#infrastructure/models/userModel"
+import { UserModel, UserModelSymbol } from "#external/models/userModel"
 import { inject, injectable } from "inversify"
 
 @injectable()

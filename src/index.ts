@@ -1,10 +1,20 @@
-const greeting = 'ola'
+import 'reflect-metadata'
+import { DIConatiner } from "#external/infrastructure/inversify.config"
+import { Express } from '#external/infrastructure/express.config'
+import { Mongoose } from "#external/infrastructure/mongoose.config"
 
-function sayGreeting (greeting: string) {
-  console.log(greeting)
+class Main {
+
+  private readonly mongooseConnection = new Mongoose()
+  private readonly diContainer = new DIConatiner()
+  private readonly express = new Express(this.diContainer)
+
+  async init () {
+    this.diContainer.init()
+    this.express.init()
+    await this.mongooseConnection.init()
+  }
 }
 
-sayGreeting(greeting)
-
-// config mongoose
-// config inversify
+const main = new Main()
+main.init()
