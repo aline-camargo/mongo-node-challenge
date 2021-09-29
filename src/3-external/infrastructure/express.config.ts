@@ -1,7 +1,9 @@
-import { SignUp, SignUpSymbol } from '#external/api/signUp'
 import express from 'express'
+import { ISignUpSymbol, ISignUp } from '#application/api/iSignUp'
+import { injectable } from 'inversify'
 import { DIConatiner } from './inversify.config'
 
+@injectable()
 export class Express {
 
   public readonly app = express()
@@ -21,8 +23,7 @@ export class Express {
 
   setUp () {
     this.app.post('/user', (req, res) => {
-      // fix dependcy injection
-      const signUp = this.diContainer.container.get<SignUp>(SignUpSymbol)
+      const signUp = this.diContainer.container.get<ISignUp>(ISignUpSymbol)
       signUp.run()
       res.send('Hello World!');
     });

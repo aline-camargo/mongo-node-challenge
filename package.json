@@ -2,11 +2,11 @@
   "name": "ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node build/index.js",
-    "start-dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "start": "npm run build && node build/server.js",
+    "start-dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
     "build": "rimraf ./build && tsc && tsc-alias",
     "lint": "eslint . --ext .ts"
   },
@@ -23,7 +23,6 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "nodemon": "^2.0.13",
     "rimraf": "^3.0.2",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.8",

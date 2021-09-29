@@ -9,4 +9,3 @@ const schema = new Schema<User>({
 
 export const UserModel = model<User>('User', schema)
 
-export const UserModelSymbol = Symbol.for('UserModel')

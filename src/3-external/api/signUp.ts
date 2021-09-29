@@ -1,12 +1,13 @@
-import { SignUpUseCase, SignUpUseCaseSymbol } from "#application/useCases/signUpUseCase";
+import { ISignUp } from "#application/api/iSignUp";
+import { ISignUpUseCase, ISignUpUseCaseSymbol } from "#application/useCases/iSignUpUseCase";
 import { inject, injectable } from "inversify";
 
 
 @injectable()
-export class SignUp {
+export class SignUp implements ISignUp {
   constructor (
-    @inject(SignUpUseCaseSymbol)
-    private readonly signUpUseCase: SignUpUseCase
+    @inject(ISignUpUseCaseSymbol)
+    private readonly signUpUseCase: ISignUpUseCase
   ) {}
 
   run () {

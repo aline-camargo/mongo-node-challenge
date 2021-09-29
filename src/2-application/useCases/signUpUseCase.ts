@@ -11,8 +11,8 @@ export class SignUpUseCase {
 
   run () {
     this.userRepository.create({
-      firstName: '',
-      lastName: '',
+      firstName: 'Jane',
+      lastName: 'Doe',
       age: 0
     })
   }
