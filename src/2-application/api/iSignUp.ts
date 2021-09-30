@@ -1,5 +1,7 @@
-export const ISignUpSymbol = Symbol.for("ISignUp")
+import { Request } from 'express'
+
+export const ISignUpSymbol = Symbol.for('ISignUp')
 
 export interface ISignUp {
-  run () : void
+  run (request: Request) : void
 }

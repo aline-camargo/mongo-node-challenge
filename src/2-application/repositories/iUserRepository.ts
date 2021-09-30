@@ -1,6 +1,6 @@
-import User from "#domain/entities/user";
+import { User } from '#domain/entities/user'
 
-export const IUserRepositorySymbol = Symbol.for("IUserRepository")
+export const IUserRepositorySymbol = Symbol.for('IUserRepository')
 
 export interface IUserRepository {
   create (user: User) : Promise<User>

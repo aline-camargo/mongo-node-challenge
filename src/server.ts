@@ -1,10 +1,9 @@
 import 'reflect-metadata'
-import { DIConatiner } from "#external/infrastructure/inversify.config"
+import { DIConatiner } from '#external/infrastructure/inversify.config'
 import { Express } from '#external/infrastructure/express.config'
-import { Mongoose } from "#external/infrastructure/mongoose.config"
+import { Mongoose } from '#external/infrastructure/mongoose.config'
 
 class Main {
-
   private readonly mongooseConnection = new Mongoose()
   private readonly diContainer = new DIConatiner()
   private readonly express = new Express(this.diContainer)

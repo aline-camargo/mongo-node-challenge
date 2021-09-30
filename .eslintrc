@@ -11,5 +11,10 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "standard"
-  ]
+  ],
+  "rules": {
+    "no-use-before-define": "off",
+    "no-useless-constructor": "off",
+    "camelcase": "off"
+  }
 }

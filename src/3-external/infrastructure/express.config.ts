@@ -5,27 +5,32 @@ import { DIConatiner } from './inversify.config'
 
 @injectable()
 export class Express {
-
   public readonly app = express()
   private readonly port = 3000
 
-  constructor(
+  constructor (
     private readonly diContainer = new DIConatiner()
   ) {}
 
-  init () {
+  init () : void {
+    this.app.use(express.json())
+
     this.app.listen(this.port, () =>
-      console.log('Example app listening on port 3000!'),
+      console.log('Example app listening on port 3000!')
     )
 
     this.setUp()
   }
 
-  setUp () {
-    this.app.post('/user', (req, res) => {
+  setUp () : void {
+    this.app.post('/user', async (req, res) => {
       const signUp = this.diContainer.container.get<ISignUp>(ISignUpSymbol)
-      signUp.run()
-      res.send('Hello World!');
-    });
+      try {
+        const result = await signUp.run(req)
+        res.send({ data: result })
+      } catch (err) {
+        res.send({ mensagem: err })
+      }
+    })
   }
 }
