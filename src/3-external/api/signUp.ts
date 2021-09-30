@@ -2,7 +2,7 @@ import { ISignUp } from '#application/api/iSignUp'
 import { InputUser } from '#application/dto/inputUser'
 import { ISignUpUseCase, ISignUpUseCaseSymbol } from '#application/useCases/iSignUpUseCase'
 import { User } from '#domain/entities/user'
-import { validate } from 'class-validator'
+import { invalidEmail, internalError } from '#domain/error/errors'
 import { Request } from 'express'
 import { inject, injectable } from 'inversify'
 
@@ -17,12 +17,21 @@ export class SignUp implements ISignUp {
   async run (request: Request): Promise<User> {
     const input = new InputUser(request.body)
 
-    // TODO: tratamento de erros
     try {
-      await validate(input)
-      return this.signUpUseCase.run(input)
+      input.validate()
+      const result = await this.signUpUseCase.run(input)
+      return result
     } catch (err) {
-      throw new Error('validation failed. errors: ' + err)
+      console.log(err)
+      switch (err) {
+        case invalidEmail:
+          throw err
+        // TODO: tratamento de erros de validacao
+        // case 'An instance of InputUser has failed the validation':
+        //   throw 'ie'
+        default:
+          throw internalError
+      }
     }
   }
 }

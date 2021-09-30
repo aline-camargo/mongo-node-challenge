@@ -1,7 +1,8 @@
 import { IsArray, IsEmail, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
+import { ValidatableInput } from './validableInput'
 
-export class InputUser {
+export class InputUser extends ValidatableInput {
   @IsNotEmpty()
   @IsString()
   nome!: string
@@ -21,6 +22,7 @@ export class InputUser {
   telefones!: Telefones[]
 
   constructor (obj: Partial<InputUser>) {
+    super()
     Object.assign(this, obj)
   }
 }

@@ -30,7 +30,7 @@ export class Express {
         res.send({ data: result })
       } catch (err) {
         // @ts-ignore
-        res.send({ mensagem: err.message })
+        res.send({ mensagem: err })
       }
     })
   }
