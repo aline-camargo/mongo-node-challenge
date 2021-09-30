@@ -1,9 +1,8 @@
-import { v4 as uuidv4 } from 'uuid'
 import { model, Schema } from 'mongoose'
 import { User } from '#domain/entities/user'
 
 const schema = new Schema<User>({
-  _id: { type: String, default: uuidv4(), name: 'id' },
+  _id: { type: String, name: 'id' },
   nome: { type: String, required: true },
   email: { type: String, required: true },
   senha: { type: String, required: true },

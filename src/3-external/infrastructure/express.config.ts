@@ -29,7 +29,8 @@ export class Express {
         const result = await signUp.run(req)
         res.send({ data: result })
       } catch (err) {
-        res.send({ mensagem: err })
+        // @ts-ignore
+        res.send({ mensagem: err.message })
       }
     })
   }

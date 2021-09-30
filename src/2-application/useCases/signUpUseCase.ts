@@ -18,11 +18,17 @@ export class SignUpUseCase implements ISignUpUseCase {
   // TODO: Fix output
   async run (input: InputUser): Promise<User> {
     try {
+      if (await this.emailAlreadyRegistered(input.email)) throw new Error ('Email já registrado.')
       const hashedPassword = await this.hashService.generateHash(input.senha)
       return this.userRepository.create({ ...input, senha: hashedPassword })
     } catch (err) {
       throw new Error('Creation error' + err)
     }
+  }
+
+  private async emailAlreadyRegistered(email: string) : Promise<boolean> {
+    const result = await this.userRepository.findByEmail(email)
+    return !!result
   }
 }
 
