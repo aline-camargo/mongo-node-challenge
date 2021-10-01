@@ -1,4 +1,4 @@
-import { validateSync } from "class-validator"
+import { validateSync, ValidationError } from 'class-validator'
 export class ValidatableInput {
   validate () : { isValid: boolean, errorsList: string} {
     const errors = this.errors()
@@ -12,12 +12,12 @@ export class ValidatableInput {
     if (!isValid) {
       result.errorsList = errors.map((error) => {
         return error.property
-      }).join(",")
+      }).join(',')
     }
     return result
   }
 
-  errors () {
+  errors () : ValidationError[] {
     return validateSync(this)
   }
 }

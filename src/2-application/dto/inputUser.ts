@@ -21,14 +21,14 @@ export class InputUser extends ValidatableInput {
   constructor (obj: Partial<InputUser>) {
     super()
     const telefoneList = obj.telefones ? obj.telefones : []
-    const telefones = telefoneList.map((i) =>{
+    const telefones = telefoneList.map((i) => {
       return new Telefone(i)
     })
 
     Object.assign(this, obj, { telefones })
   }
 
-  validatePhones() {
+  validatePhones () : { isValid: boolean, errorsList: string } {
     const isValid = this.telefones.every(phone => {
       return phone.validate().isValid
     })
@@ -39,7 +39,7 @@ export class InputUser extends ValidatableInput {
     }
   }
 
-  validate (): { isValid: boolean, errorsList: string} {
+  validate () : { isValid: boolean, errorsList: string } {
     const validate = super.validate()
     const validatePhones = this.validatePhones()
 

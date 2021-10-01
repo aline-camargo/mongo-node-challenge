@@ -1,4 +1,4 @@
-export const IErrorsSymbol = Symbol.for("IErrors")
+export const IErrorsSymbol = Symbol.for('IErrors')
 
 export interface IErrors {
   getInternalError() : IError

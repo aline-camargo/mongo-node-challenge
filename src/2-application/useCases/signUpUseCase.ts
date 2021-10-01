@@ -23,7 +23,7 @@ export class SignUpUseCase implements ISignUpUseCase {
 
   async run (input: InputUser): Promise<OutputUser> {
     if (await this.emailAlreadyRegistered(input.email)) {
-      const error =  this.errors.getInvalidEmailError()
+      const error = this.errors.getInvalidEmailError()
       return {
         result: error,
         success: false
@@ -38,16 +38,16 @@ export class SignUpUseCase implements ISignUpUseCase {
     }
   }
 
-  private createUser(input: InputUser, hashedPassword: string): Promise<User> {
+  private createUser (input: InputUser, hashedPassword: string): Promise<User> {
     return this.userRepository.create({ ...input, senha: hashedPassword })
   }
 
-  private async emailAlreadyRegistered(email: string) : Promise<boolean> {
+  private async emailAlreadyRegistered (email: string) : Promise<boolean> {
     const result = await this.userRepository.findByEmail(email)
     return !!result
   }
 
-  private userToOutputUser(user: User) {
+  private userToOutputUser (user: User) {
     return {
       id: user._id,
       nome: user.nome,
@@ -61,7 +61,7 @@ export class SignUpUseCase implements ISignUpUseCase {
     }
   }
 
-  private getTimeZoneDate(date?: Date) {
+  private getTimeZoneDate (date?: Date) {
     return moment.tz(date, 'America/Sao_Paulo').utc(true).toDate()
   }
 }
