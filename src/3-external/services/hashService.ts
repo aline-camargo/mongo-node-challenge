@@ -1,8 +1,9 @@
+import { IHashService } from '#application/services/iHashService';
 import bcrypt from 'bcrypt'
 import { injectable } from 'inversify'
 
 @injectable()
-export class HashService {
+export class HashService implements IHashService {
   private readonly saltRounds = 10;
 
   async generateHash (plaintextPassword: string) : Promise<string> {

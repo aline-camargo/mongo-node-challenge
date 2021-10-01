@@ -2,11 +2,12 @@ import moment from 'moment-timezone'
 import { InputUser } from '#application/dto/inputUser'
 import { OutputUser } from '#application/dto/outputUser'
 import { IUserRepository, IUserRepositorySymbol } from '#application/repositories/iUserRepository'
-import { IHashService, IHashServiceSymbol } from '#application/services/hashService'
+import { IHashService, IHashServiceSymbol } from '#application/services/iHashService'
 import { User } from '#domain/entities/user'
 import { IErrors, IErrorsSymbol } from '#domain/error/iErrors'
 import { inject, injectable } from 'inversify'
 import { ISignUpUseCase } from './iSignUpUseCase'
+import { ITokenService, ITokenServiceSymbol } from '#application/services/iTokenService'
 
 @injectable()
 export class SignUpUseCase implements ISignUpUseCase {
@@ -16,6 +17,9 @@ export class SignUpUseCase implements ISignUpUseCase {
 
     @inject(IHashServiceSymbol)
     private readonly hashService : IHashService,
+
+    @inject(ITokenServiceSymbol)
+    private readonly tokenService : ITokenService,
 
     @inject(IErrorsSymbol)
     private readonly errors: IErrors
@@ -30,12 +34,26 @@ export class SignUpUseCase implements ISignUpUseCase {
       }
     }
 
-    const hashedPassword = await this.hashService.generateHash(input.senha)
+    const hashedPassword = await this.getHashedPassword(input)
     const user = await this.createUser(input, hashedPassword)
+    const token = await this.createToken(user)
+    const updatedUser = await this.insertToken(user, token)
     return {
-      result: this.userToOutputUser(user),
+      result: this.userToOutputUser(updatedUser),
       success: true
     }
+  }
+
+  private getHashedPassword(input: InputUser) {
+    return this.hashService.generateHash(input.senha)
+  }
+
+  private async insertToken(user: User, token: string) {
+    return await this.userRepository.updateToken(user._id as string, token)
+  }
+
+  private async createToken(user: User) {
+    return await this.tokenService.generateToken(user._id as string, user.nome, user.email)
   }
 
   private createUser (input: InputUser, hashedPassword: string): Promise<User> {
