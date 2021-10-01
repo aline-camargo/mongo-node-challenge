@@ -1,8 +1,8 @@
 import { ISignUp } from '#application/api/iSignUp'
 import { InputUser } from '#application/dto/inputUser'
+import { OutputUser } from '#application/dto/outputUser'
 import { ISignUpUseCase, ISignUpUseCaseSymbol } from '#application/useCases/iSignUpUseCase'
-import { User } from '#domain/entities/user'
-import { invalidEmail, internalError } from '#domain/error/errors'
+import { IErrorsSymbol, IErrors } from '#domain/error/iErrors'
 import { Request } from 'express'
 import { inject, injectable } from 'inversify'
 
@@ -10,27 +10,34 @@ import { inject, injectable } from 'inversify'
 export class SignUp implements ISignUp {
   constructor (
     @inject(ISignUpUseCaseSymbol)
-    private readonly signUpUseCase: ISignUpUseCase
+    private readonly signUpUseCase: ISignUpUseCase,
+
+    @inject(IErrorsSymbol)
+    private readonly errors: IErrors
   ) {}
 
-  // TODO: Fix output
-  async run (request: Request): Promise<User> {
-    const input = new InputUser(request.body)
-
+  async run (request: Request): Promise<OutputUser> {
     try {
-      input.validate()
+      const input = new InputUser(request.body)
+      const valid = input.validate()
+
+      if (!valid.isValid) {
+        const validationError = this.errors.getValidationError()
+        return {
+          result: {
+            ...validationError,
+            message: validationError.message + valid.errorsList
+          },
+          success: valid.isValid
+        }
+      }
+
       const result = await this.signUpUseCase.run(input)
       return result
     } catch (err) {
-      console.log(err)
-      switch (err) {
-        case invalidEmail:
-          throw err
-        // TODO: tratamento de erros de validacao
-        // case 'An instance of InputUser has failed the validation':
-        //   throw 'ie'
-        default:
-          throw internalError
+      return {
+        result: this.errors.getInternalError(),
+        success: false
       }
     }
   }

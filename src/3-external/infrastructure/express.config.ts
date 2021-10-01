@@ -2,6 +2,8 @@ import express from 'express'
 import { ISignUpSymbol, ISignUp } from '#application/api/iSignUp'
 import { injectable } from 'inversify'
 import { DIConatiner } from './inversify.config'
+import { IError } from '#domain/error/iErrors'
+import { StatusCodes } from 'http-status-codes'
 
 @injectable()
 export class Express {
@@ -25,12 +27,17 @@ export class Express {
   setUp () : void {
     this.app.post('/user', async (req, res) => {
       const signUp = this.diContainer.container.get<ISignUp>(ISignUpSymbol)
-      try {
-        const result = await signUp.run(req)
-        res.send({ data: result })
-      } catch (err) {
-        // @ts-ignore
-        res.send({ mensagem: err })
+      const result = await signUp.run(req)
+
+      if (result.success) {
+        res
+          .status(StatusCodes.CREATED)
+          .send({ data: result.result })
+      } else {
+        const error = result.result as IError
+        res
+          .status(error.code || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send({ mensagem: error.message })
       }
     })
   }

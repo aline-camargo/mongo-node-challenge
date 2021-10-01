@@ -1,10 +1,8 @@
 import { InputUser } from '#application/dto/inputUser'
-import { User } from '#domain/entities/user'
+import { OutputUser } from '#application/dto/outputUser'
 
 export const ISignUpUseCaseSymbol = Symbol.for('ISignUpUseCase')
 
 export interface ISignUpUseCase {
-
-  // TODO: Fix output
-  run (input: InputUser) : Promise<User>
+  run (input: InputUser) : Promise<OutputUser>
 }

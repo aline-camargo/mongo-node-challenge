@@ -3,7 +3,9 @@ import { IUserRepository, IUserRepositorySymbol } from '#application/repositorie
 import { IHashService, IHashServiceSymbol } from '#application/services/hashService'
 import { ISignUpUseCase, ISignUpUseCaseSymbol } from '#application/useCases/iSignUpUseCase'
 import { SignUpUseCase } from '#application/useCases/signUpUseCase'
+import { IErrors, IErrorsSymbol } from '#domain/error/iErrors'
 import { SignUp } from '#external/api/signUp'
+import { Errors } from '#external/errors/errors'
 import UserRepository from '#external/repositories/userRepository'
 import { HashService } from '#external/services/hashService'
 import { Container } from 'inversify'
@@ -18,5 +20,6 @@ export class DIConatiner {
     this.container.bind<ISignUp>(ISignUpSymbol).to(SignUp)
     this.container.bind<ISignUpUseCase>(ISignUpUseCaseSymbol).to(SignUpUseCase)
     this.container.bind<IHashService>(IHashServiceSymbol).to(HashService)
+    this.container.bind<IErrors>(IErrorsSymbol).to(Errors)
   }
 }
