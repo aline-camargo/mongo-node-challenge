@@ -4,6 +4,7 @@ export interface IErrors {
   getInternalError() : IError
   getValidationError() : IError
   getInvalidEmailError() : IError
+  getInvalidSignInError() : IError
 }
 
 export interface IError {

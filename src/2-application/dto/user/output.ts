@@ -1,6 +1,6 @@
 import { IError } from '#domain/error/iErrors'
 
-interface User {
+export interface UserResult {
   id?: string
   nome: string
   email: string
@@ -18,6 +18,6 @@ interface Telefone {
 }
 
 export interface OutputUser {
-  result: User | IError
+  result: UserResult | IError
   success: boolean
 }

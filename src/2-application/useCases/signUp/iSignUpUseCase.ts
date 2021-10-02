@@ -1,5 +1,5 @@
-import { InputUser } from '#application/dto/inputUser'
-import { OutputUser } from '#application/dto/outputUser'
+import { InputUser } from '#application/dto/user/input'
+import { OutputUser } from '#application/dto/user/output'
 
 export const ISignUpUseCaseSymbol = Symbol.for('ISignUpUseCase')
 

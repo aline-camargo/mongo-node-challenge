@@ -1,6 +1,5 @@
-import moment from 'moment-timezone'
-import { InputUser } from '#application/dto/inputUser'
-import { OutputUser } from '#application/dto/outputUser'
+import { InputUser } from '#application/dto/user/input'
+import { OutputUser } from '#application/dto/user/output'
 import { IUserRepository, IUserRepositorySymbol } from '#application/repositories/iUserRepository'
 import { IHashService, IHashServiceSymbol } from '#application/services/iHashService'
 import { User } from '#domain/entities/user'
@@ -8,12 +7,16 @@ import { IErrors, IErrorsSymbol } from '#domain/error/iErrors'
 import { inject, injectable } from 'inversify'
 import { ISignUpUseCase } from './iSignUpUseCase'
 import { ITokenService, ITokenServiceSymbol } from '#application/services/iTokenService'
+import { IUserHelperSymbol, IUserHelper } from '#application/helpers/iUserHelper'
 
 @injectable()
 export class SignUpUseCase implements ISignUpUseCase {
   constructor (
     @inject(IUserRepositorySymbol)
     private readonly userRepository : IUserRepository,
+
+    @inject(IUserHelperSymbol)
+    private readonly userHelper : IUserHelper,
 
     @inject(IHashServiceSymbol)
     private readonly hashService : IHashService,
@@ -26,7 +29,8 @@ export class SignUpUseCase implements ISignUpUseCase {
   ) {}
 
   async run (input: InputUser): Promise<OutputUser> {
-    if (await this.emailAlreadyRegistered(input.email)) {
+    const userExists = await this.emailAlreadyRegistered(input.email)
+    if (userExists) {
       const error = this.errors.getInvalidEmailError()
       return {
         result: error,
@@ -39,9 +43,14 @@ export class SignUpUseCase implements ISignUpUseCase {
     const token = await this.createToken(user)
     const updatedUser = await this.insertToken(user, token)
     return {
-      result: this.userToOutputUser(updatedUser),
+      result: this.userHelper.userToUserResult(updatedUser),
       success: true
     }
+  }
+
+  private async emailAlreadyRegistered (email: string) : Promise<boolean> {
+    const result = await this.userRepository.findByEmail(email)
+    return !!result
   }
 
   private getHashedPassword(input: InputUser) {
@@ -58,29 +67,6 @@ export class SignUpUseCase implements ISignUpUseCase {
 
   private createUser (input: InputUser, hashedPassword: string): Promise<User> {
     return this.userRepository.create({ ...input, senha: hashedPassword })
-  }
-
-  private async emailAlreadyRegistered (email: string) : Promise<boolean> {
-    const result = await this.userRepository.findByEmail(email)
-    return !!result
-  }
-
-  private userToOutputUser (user: User) {
-    return {
-      id: user._id,
-      nome: user.nome,
-      email: user.email,
-      senha: user.senha,
-      telefones: user.telefones,
-      data_atualizacao: this.getTimeZoneDate(user.data_atualizacao),
-      data_criacao: this.getTimeZoneDate(user.data_criacao),
-      ultimo_login: this.getTimeZoneDate(user.ultimo_login),
-      token: user.token
-    }
-  }
-
-  private getTimeZoneDate (date?: Date) {
-    return moment.tz(date, 'America/Sao_Paulo').utc(true).toDate()
   }
 }
 

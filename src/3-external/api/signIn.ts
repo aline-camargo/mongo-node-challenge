@@ -1,16 +1,16 @@
-import { ISignUp } from '#application/api/iSignUp'
-import { InputUser } from '#application/dto/user/input'
-import { OutputUser } from '#application/dto/user/output'
-import { ISignUpUseCase, ISignUpUseCaseSymbol } from '#application/useCases/signUp/iSignUpUseCase'
-import { IErrorsSymbol, IErrors } from '#domain/error/iErrors'
 import { Request } from 'express'
 import { inject, injectable } from 'inversify'
+import { ISignIn } from '#application/api/iSignIn'
+import { OutputUser } from '#application/dto/user/output'
+import { ISignInUseCase, ISignInUseCaseSymbol } from '#application/useCases/signIn/iSignInUseCase'
+import { IErrorsSymbol, IErrors } from '#domain/error/iErrors'
+import { InputSignIn } from '#application/dto/signIn/input'
 
 @injectable()
-export class SignUp implements ISignUp {
+export class SignIn implements ISignIn {
   constructor (
-    @inject(ISignUpUseCaseSymbol)
-    private readonly signUpUseCase: ISignUpUseCase,
+    @inject(ISignInUseCaseSymbol)
+    private readonly signInUseCase: ISignInUseCase,
 
     @inject(IErrorsSymbol)
     private readonly errors: IErrors
@@ -18,7 +18,7 @@ export class SignUp implements ISignUp {
 
   async run (request: Request): Promise<OutputUser> {
     try {
-      const input = new InputUser(request.body)
+      const input = new InputSignIn(request.body)
       const valid = input.validate()
 
       if (!valid.isValid) {
@@ -32,7 +32,7 @@ export class SignUp implements ISignUp {
         }
       }
 
-      const result = await this.signUpUseCase.run(input)
+      const result = await this.signInUseCase.run(input)
       return result
     } catch (err) {
       return {
@@ -43,4 +43,4 @@ export class SignUp implements ISignUp {
   }
 }
 
-export const SignUpSymbol = Symbol.for('SignUp')
+export const SignInSymbol = Symbol.for('SignIn')

@@ -1,8 +1,8 @@
 import { OutputUser } from '#application/dto/user/output'
 import { Request } from 'express'
 
-export const ISignUpSymbol = Symbol.for('ISignUp')
+export const ISignInSymbol = Symbol.for('ISignIn')
 
-export interface ISignUp {
+export interface ISignIn {
   run (request: Request) : Promise<OutputUser>
 }
