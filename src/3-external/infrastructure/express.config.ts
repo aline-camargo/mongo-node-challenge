@@ -6,6 +6,7 @@ import { ISignIn, ISignInSymbol } from '#external/api/signIn/iSignIn'
 import { DIConatiner } from './inversify.config'
 import { IError } from '#domain/error/iErrors'
 import { IVerifyToken, IVerifyTokenSymbol } from '#external/api/verifyToken/iVerifyToken'
+import { IGetUser, IGetUserSymbol } from '#external/api/getUser/iGetUser'
 
 @injectable()
 export class Express {
@@ -69,15 +70,26 @@ export class Express {
   }
 
   private getUserEndpoint() {
-    this.app.get('/user', (req, res, next) => this.verifyToken(req, res, next), async (req, res) => {
-      // TODO: Validar se id de param é == token
-      res.send(req.params)
+    this.app.get('/user/:userId', (req, res, next) => this.verifyToken(req, res, next), async (req, res) => {
+      const getUser = this.diContainer.container.get<IGetUser>(IGetUserSymbol)
+      const result = await getUser.run(req)
+
+      if (result.success) {
+        res
+          .status(StatusCodes.OK)
+          .send({ data: result.result })
+      } else {
+        const error = result.result as IError
+        res
+          .status(error.code)
+          .send({ mensagem: error.message })
+      }
     })
   }
 
   private async verifyToken (req: Request, res: Response, next: NextFunction) {
-    const signIn = this.diContainer.container.get<IVerifyToken>(IVerifyTokenSymbol)
-    const result = await signIn.run(req)
+    const verifyToken = this.diContainer.container.get<IVerifyToken>(IVerifyTokenSymbol)
+    const result = await verifyToken.run(req)
 
     if (result.success) {
       req.params = { ...req.params, tokenUserId: result.result as string }

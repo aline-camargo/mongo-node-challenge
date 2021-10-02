@@ -21,6 +21,10 @@ import { IVerifyToken, IVerifyTokenSymbol } from '#external/api/verifyToken/iVer
 import { VerifyToken } from '#external/api/verifyToken/verifyToken'
 import { IVerifyTokenUseCase, IVerifyTokenUseCaseSymbol } from '#application/useCases/verifyToken/iVerifyTokenUseCase'
 import { VerifyTokenUseCase } from '#application/useCases/verifyToken/verifyTokenUseCase'
+import { GetUserUseCase } from '#application/useCases/getUser/getUserUseCase'
+import { IGetUserUseCase, IGetUserUseCaseSymbol } from '#application/useCases/getUser/iGetUserUseCase'
+import { GetUser } from '#external/api/getUser/getUser'
+import { IGetUser, IGetUserSymbol } from '#external/api/getUser/iGetUser'
 
 export class DIConatiner {
   public readonly container = new Container({ autoBindInjectable: true })
@@ -31,10 +35,12 @@ export class DIConatiner {
     this.container.bind<IUserRepository>(IUserRepositorySymbol).to(UserRepository)
     this.container.bind<ISignUp>(ISignUpSymbol).to(SignUp)
     this.container.bind<ISignIn>(ISignInSymbol).to(SignIn)
+    this.container.bind<IGetUser>(IGetUserSymbol).to(GetUser)
     this.container.bind<IVerifyToken>(IVerifyTokenSymbol).to(VerifyToken)
     this.container.bind<ISignUpUseCase>(ISignUpUseCaseSymbol).to(SignUpUseCase)
     this.container.bind<ISignInUseCase>(ISignInUseCaseSymbol).to(SignInUseCase)
     this.container.bind<IVerifyTokenUseCase>(IVerifyTokenUseCaseSymbol).to(VerifyTokenUseCase)
+    this.container.bind<IGetUserUseCase>(IGetUserUseCaseSymbol).to(GetUserUseCase)
     this.container.bind<IUserHelper>(IUserHelperSymbol).to(UserHelper)
     this.container.bind<IHashService>(IHashServiceSymbol).to(HashService)
     this.container.bind<ITokenService>(ITokenServiceSymbol).to(TokenService)
