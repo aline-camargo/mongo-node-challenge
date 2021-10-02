@@ -62,12 +62,10 @@ export class SignUpUseCase implements ISignUpUseCase {
   }
 
   private async createToken (user: User) {
-    return await this.tokenService.generateToken(user._id as string, user.nome, user.email)
+    return await this.tokenService.generateToken(user._id as string, user.nome, user.email, user.ultimo_login)
   }
 
   private createUser (input: InputUser, hashedPassword: string): Promise<User> {
     return this.userRepository.create({ ...input, senha: hashedPassword })
   }
 }
-
-export const SignUpUseCaseSymbol = Symbol.for('SignUpUseCase')

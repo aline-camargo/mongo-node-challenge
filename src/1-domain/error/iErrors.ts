@@ -5,9 +5,10 @@ export interface IErrors {
   getValidationError() : IError
   getInvalidEmailError() : IError
   getInvalidSignInError() : IError
+  getUnauthorizedError() : IError
 }
 
 export interface IError {
   message: string
-  code?: number
+  code: number
 }

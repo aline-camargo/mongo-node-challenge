@@ -1,10 +1,11 @@
-import express from 'express'
-import { ISignUpSymbol, ISignUp } from '#application/api/iSignUp'
+import express, { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
+import { StatusCodes } from 'http-status-codes'
+import { ISignUpSymbol, ISignUp } from '#external/api/signUp/iSignUp'
+import { ISignIn, ISignInSymbol } from '#external/api/signIn/iSignIn'
 import { DIConatiner } from './inversify.config'
 import { IError } from '#domain/error/iErrors'
-import { StatusCodes } from 'http-status-codes'
-import { ISignIn, ISignInSymbol } from '#application/api/iSignIn'
+import { IVerifyToken, IVerifyTokenSymbol } from '#external/api/verifyToken/iVerifyToken'
 
 @injectable()
 export class Express {
@@ -28,6 +29,7 @@ export class Express {
   private setUp () : void {
     this.signUpEndpoint()
     this.signInEndpoint()
+    this.getUserEndpoint()
   }
 
   private signUpEndpoint () {
@@ -42,7 +44,7 @@ export class Express {
       } else {
         const error = result.result as IError
         res
-          .status(error.code || StatusCodes.INTERNAL_SERVER_ERROR)
+          .status(error.code)
           .send({ mensagem: error.message })
       }
     })
@@ -60,9 +62,30 @@ export class Express {
       } else {
         const error = result.result as IError
         res
-          .status(error.code || StatusCodes.INTERNAL_SERVER_ERROR)
+          .status(error.code)
           .send({ mensagem: error.message })
       }
     })
+  }
+
+  private getUserEndpoint() {
+    this.app.get('/user', (req, res, next) => this.verifyToken(req, res, next), async (req, res) => {
+      // TODO: Validar se id de param é == token
+      res.send(req.params)
+    })
+  }
+
+  private async verifyToken (req: Request, res: Response, next: NextFunction) {
+    const signIn = this.diContainer.container.get<IVerifyToken>(IVerifyTokenSymbol)
+    const result = await signIn.run(req)
+
+    if (result.success) {
+      req.params = { ...req.params, tokenUserId: result.result as string }
+      next()
+    } else {
+      const error = result.result as IError
+      res.status(error.code).send({ mensagem: error.message })
+    }
+
   }
 }

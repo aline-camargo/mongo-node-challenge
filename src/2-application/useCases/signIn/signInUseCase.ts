@@ -33,6 +33,8 @@ export class SignInUseCase implements ISignInUseCase {
     const validPassword = await this.validateHashedPassword(input.senha, user.senha)
 
     if (validPassword) {
+      // TODO: Atualizar last_login do token
+      // const updatedUser = this.userRepository.updateLastLogin(user._id)
       return {
         result: this.userHelper.userToUserResult(user),
         success: true
@@ -59,4 +61,3 @@ export class SignInUseCase implements ISignInUseCase {
   }
 }
 
-export const SignInUseCaseSymbol = Symbol.for('SignInUseCase')

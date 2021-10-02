@@ -32,4 +32,11 @@ export class Errors implements IErrors {
       code: StatusCodes.UNAUTHORIZED
     }
   }
+
+  getUnauthorizedError (): IError {
+    return {
+      message: ErrorMessages.UNAUTHORIZED_ERROR_MESSAGE,
+      code: StatusCodes.UNAUTHORIZED
+    }
+  }
 }
