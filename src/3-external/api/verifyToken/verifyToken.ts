@@ -20,11 +20,11 @@ export class VerifyToken implements IVerifyToken {
       const headerKey = 'Bearer'
       let token
       if (request.headers) {
-        if (request.headers['authentication']) {
-          const auth = request.headers['authentication'] as string
-          const parts = auth.split(' ');
+        if (request.headers.authentication) {
+          const auth = request.headers.authentication as string
+          const parts = auth.split(' ')
           if (parts.length === 2 && parts[0] === headerKey) {
-            token = parts[1];
+            token = parts[1]
           }
         }
       }

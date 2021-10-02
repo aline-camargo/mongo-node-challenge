@@ -1,9 +1,9 @@
-import { OutputUser } from "#application/dto/user/output";
-import { IGetUserUseCaseSymbol, IGetUserUseCase } from "#application/useCases/getUser/iGetUserUseCase";
-import { IErrorsSymbol, IErrors } from "#domain/error/iErrors";
-import { Request } from "express";
-import { inject, injectable } from "inversify";
-import { IGetUser } from "./iGetUser";
+import { OutputUser } from '#application/dto/user/output'
+import { IGetUserUseCaseSymbol, IGetUserUseCase } from '#application/useCases/getUser/iGetUserUseCase'
+import { IErrorsSymbol, IErrors } from '#domain/error/iErrors'
+import { Request } from 'express'
+import { inject, injectable } from 'inversify'
+import { IGetUser } from './iGetUser'
 
 @injectable()
 export class GetUser implements IGetUser {
@@ -14,7 +14,8 @@ export class GetUser implements IGetUser {
     @inject(IErrorsSymbol)
     private readonly errors: IErrors
   ) {}
-  async run(request: Request): Promise<OutputUser> {
+
+  async run (request: Request): Promise<OutputUser> {
     try {
       const allowedUser = request.params.userId === request.params.tokenUserId
 
@@ -34,5 +35,4 @@ export class GetUser implements IGetUser {
       }
     }
   }
-
 }

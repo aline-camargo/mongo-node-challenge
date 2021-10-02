@@ -39,4 +39,3 @@ export class GetUserUseCase implements IGetUserUseCase {
     return this.userRepository.findById(id)
   }
 }
-

@@ -14,13 +14,12 @@ export class TokenService implements ITokenService {
     try {
       const verifiedToken = jwt.verify(token, this.privateKey) as { id: string }
       return {
-        ... verifiedToken,
+        ...verifiedToken,
         success: true
       }
     } catch (e) {
       console.log('JWT validation error')
       return { success: false, id: '' }
     }
-
   }
 }

@@ -1,15 +1,14 @@
-import { OutputVerifyToken } from "#application/dto/verifyToken/output"
-import { ITokenService, ITokenServiceSymbol } from "#application/services/iTokenService"
-import { IErrors, IErrorsSymbol } from "#domain/error/iErrors"
-import { inject, injectable } from "inversify"
-import { IVerifyTokenUseCase } from "./iVerifyTokenUseCase"
-import moment from "moment-timezone"
-import { IUserRepository, IUserRepositorySymbol } from "#application/repositories/iUserRepository"
-import { User } from "#domain/entities/user"
+import { OutputVerifyToken } from '#application/dto/verifyToken/output'
+import { ITokenService, ITokenServiceSymbol } from '#application/services/iTokenService'
+import { IErrors, IErrorsSymbol } from '#domain/error/iErrors'
+import { inject, injectable } from 'inversify'
+import { IVerifyTokenUseCase } from './iVerifyTokenUseCase'
+import moment from 'moment-timezone'
+import { IUserRepository, IUserRepositorySymbol } from '#application/repositories/iUserRepository'
+import { User } from '#domain/entities/user'
 
 @injectable()
 export class VerifyTokenUseCase implements IVerifyTokenUseCase {
-
   constructor (
     @inject(ITokenServiceSymbol)
     private readonly tokenService: ITokenService,
@@ -21,7 +20,7 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
     private readonly errors: IErrors
   ) {}
 
-  async run(token?: string): Promise<OutputVerifyToken> {
+  async run (token?: string): Promise<OutputVerifyToken> {
     if (token === undefined) return this.getUnauthorizedError()
     const validToken = this.tokenService.validateToken(token)
 
@@ -39,17 +38,17 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
     }
   }
 
-  private isInsideToleranceLastSignIn(user: User | null) : boolean {
+  private isInsideToleranceLastSignIn (user: User | null) : boolean {
     let result = false
     if (user && user.ultimo_login) {
       const now = moment()
       const lastLoginMoment = moment(user.ultimo_login)
-      result =  now < lastLoginMoment.add(30, 'minutes')
+      result = now < lastLoginMoment.add(30, 'minutes')
     }
     return result
   }
 
-  private getUnauthorizedError(): OutputVerifyToken | PromiseLike<OutputVerifyToken> {
+  private getUnauthorizedError (): OutputVerifyToken | PromiseLike<OutputVerifyToken> {
     return {
       success: false,
       result: this.errors.getUnauthorizedError()

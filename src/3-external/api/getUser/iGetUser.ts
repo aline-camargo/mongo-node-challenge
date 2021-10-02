@@ -1,5 +1,5 @@
-import { OutputUser } from "#application/dto/user/output";
-import { Request } from "express";
+import { OutputUser } from '#application/dto/user/output'
+import { Request } from 'express'
 
 export const IGetUserSymbol = Symbol.for('IGetUser')
 

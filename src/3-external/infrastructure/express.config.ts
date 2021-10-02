@@ -69,7 +69,7 @@ export class Express {
     })
   }
 
-  private getUserEndpoint() {
+  private getUserEndpoint () {
     this.app.get('/user/:userId', (req, res, next) => this.verifyToken(req, res, next), async (req, res) => {
       const getUser = this.diContainer.container.get<IGetUser>(IGetUserSymbol)
       const result = await getUser.run(req)
@@ -98,6 +98,5 @@ export class Express {
       const error = result.result as IError
       res.status(error.code).send({ mensagem: error.message })
     }
-
   }
 }

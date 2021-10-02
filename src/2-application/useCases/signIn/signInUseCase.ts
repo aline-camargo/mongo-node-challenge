@@ -59,4 +59,3 @@ export class SignInUseCase implements ISignInUseCase {
     return this.userRepository.findByEmail(email)
   }
 }
-

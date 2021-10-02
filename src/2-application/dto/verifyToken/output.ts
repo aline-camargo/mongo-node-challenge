@@ -1,4 +1,4 @@
-import { IError } from "#domain/error/iErrors";
+import { IError } from '#domain/error/iErrors'
 
 export interface OutputVerifyToken {
   success: boolean
