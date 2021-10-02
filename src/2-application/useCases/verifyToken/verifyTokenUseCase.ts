@@ -4,6 +4,8 @@ import { IErrors, IErrorsSymbol } from "#domain/error/iErrors"
 import { inject, injectable } from "inversify"
 import { IVerifyTokenUseCase } from "./iVerifyTokenUseCase"
 import moment from "moment-timezone"
+import { IUserRepository, IUserRepositorySymbol } from "#application/repositories/iUserRepository"
+import { User } from "#domain/entities/user"
 
 @injectable()
 export class VerifyTokenUseCase implements IVerifyTokenUseCase {
@@ -12,6 +14,9 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
     @inject(ITokenServiceSymbol)
     private readonly tokenService: ITokenService,
 
+    @inject(IUserRepositorySymbol)
+    private readonly userRepository: IUserRepository,
+
     @inject(IErrorsSymbol)
     private readonly errors: IErrors
   ) {}
@@ -19,10 +24,11 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
   async run(token?: string): Promise<OutputVerifyToken> {
     if (token === undefined) return this.getUnauthorizedError()
     const validToken = this.tokenService.validateToken(token)
-    const isInsideToleranceLastSignIn = this.isInsideToleranceLastSignIn(validToken.last_login)
 
-    console.log(validToken);
-    
+    const user = await this.userRepository.findById(validToken.id)
+
+    const isInsideToleranceLastSignIn = this.isInsideToleranceLastSignIn(user)
+
     if (validToken.success && validToken.id && isInsideToleranceLastSignIn) {
       return {
         success: validToken.success,
@@ -33,11 +39,11 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
     }
   }
 
-  private isInsideToleranceLastSignIn(date?: Date) : boolean {
+  private isInsideToleranceLastSignIn(user: User | null) : boolean {
     let result = false
-    if (date) {
+    if (user && user.ultimo_login) {
       const now = moment()
-      const lastLoginMoment = moment(date)
+      const lastLoginMoment = moment(user.ultimo_login)
       result =  now < lastLoginMoment.add(30, 'minutes')
     }
     return result

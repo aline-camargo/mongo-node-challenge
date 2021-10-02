@@ -62,7 +62,7 @@ export class SignUpUseCase implements ISignUpUseCase {
   }
 
   private async createToken (user: User) {
-    return await this.tokenService.generateToken(user._id as string, user.nome, user.email, user.ultimo_login)
+    return await this.tokenService.generateToken(user._id as string, user.nome, user.email)
   }
 
   private createUser (input: InputUser, hashedPassword: string): Promise<User> {

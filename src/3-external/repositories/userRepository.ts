@@ -16,8 +16,7 @@ export default class UserRepository implements IUserRepository {
   }
 
   async updateLastLogin (id: string): Promise<User> {
-    // @ts-ignore
-    return UserModel.findByIdAndUpdate(id, { ultimo_login: moment() }, { new: true })
+    return UserModel.findByIdAndUpdate(id, { ultimo_login: moment().toDate() }, { new: true })
   }
 
   async findByEmail (email: string) : Promise<User | null> {
