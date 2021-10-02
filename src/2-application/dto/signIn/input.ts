@@ -15,4 +15,3 @@ export class InputSignIn extends ValidatableInput {
     Object.assign(this, obj)
   }
 }
-

@@ -42,7 +42,7 @@ export class SignInUseCase implements ISignInUseCase {
     }
   }
 
-  private getSignInError() {
+  private getSignInError () {
     const error = this.errors.getInvalidSignInError()
     return {
       result: error,
@@ -50,7 +50,7 @@ export class SignInUseCase implements ISignInUseCase {
     }
   }
 
-  private validateHashedPassword(password: string, hashedPassword: string): Promise<boolean> {
+  private validateHashedPassword (password: string, hashedPassword: string): Promise<boolean> {
     return this.hashService.compareHash(password, hashedPassword)
   }
 

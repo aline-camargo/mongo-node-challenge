@@ -11,6 +11,7 @@ export class TokenService implements ITokenService {
   }
 
   async validateToken (plaintextPassword: string, hash: string) : Promise<boolean> {
+    console.log(plaintextPassword, hash)
     return true
   }
 }

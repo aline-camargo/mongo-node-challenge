@@ -53,15 +53,15 @@ export class SignUpUseCase implements ISignUpUseCase {
     return !!result
   }
 
-  private getHashedPassword(input: InputUser) {
+  private getHashedPassword (input: InputUser) {
     return this.hashService.generateHash(input.senha)
   }
 
-  private async insertToken(user: User, token: string) {
+  private async insertToken (user: User, token: string) {
     return await this.userRepository.updateToken(user._id as string, token)
   }
 
-  private async createToken(user: User) {
+  private async createToken (user: User) {
     return await this.tokenService.generateToken(user._id as string, user.nome, user.email)
   }
 

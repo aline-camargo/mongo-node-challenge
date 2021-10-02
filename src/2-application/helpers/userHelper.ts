@@ -6,7 +6,7 @@ import { injectable } from 'inversify'
 
 @injectable()
 export class UserHelper implements IUserHelper {
-  userToUserResult(user: User): UserResult {
+  userToUserResult (user: User): UserResult {
     return {
       id: user._id,
       nome: user.nome,

@@ -10,7 +10,7 @@ export default class UserRepository implements IUserRepository {
     return UserModel.create({ ...user, _id: uuidv4() })
   }
 
-  async updateToken(id: string, token: string): Promise<User> {
+  async updateToken (id: string, token: string): Promise<User> {
     return UserModel.findByIdAndUpdate(id, { token: token }, { new: true })
   }
 

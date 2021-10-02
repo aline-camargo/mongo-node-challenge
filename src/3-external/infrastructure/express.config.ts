@@ -30,7 +30,7 @@ export class Express {
     this.signInEndpoint()
   }
 
-  private signUpEndpoint() {
+  private signUpEndpoint () {
     this.app.post('/user', async (req, res) => {
       const signUp = this.diContainer.container.get<ISignUp>(ISignUpSymbol)
       const result = await signUp.run(req)
@@ -48,7 +48,7 @@ export class Express {
     })
   }
 
-  private signInEndpoint() {
+  private signInEndpoint () {
     this.app.post('/signIn', async (req, res) => {
       const signIn = this.diContainer.container.get<ISignIn>(ISignInSymbol)
       const result = await signIn.run(req)
