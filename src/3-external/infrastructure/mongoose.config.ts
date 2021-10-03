@@ -1,7 +1,6 @@
 import { connect } from 'mongoose'
 
 export class Mongoose {
-
   private readonly localConfiguration = {
     url: 'mongodb://localhost:27017',
     user: 'superuser',

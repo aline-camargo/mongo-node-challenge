@@ -18,8 +18,6 @@ export class Express {
   ) {}
 
   init () : void {
-    console.log(process.env.SERVER_PORT);
-    
     this.app.use(express.json())
 
     this.app.listen(this.port, () =>

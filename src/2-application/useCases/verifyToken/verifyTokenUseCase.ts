@@ -9,7 +9,6 @@ import { User } from '#domain/entities/user'
 
 @injectable()
 export class VerifyTokenUseCase implements IVerifyTokenUseCase {
-
   private readonly toleranceTime = process.env.TOKEN_TOLERANCE_AMOUNT || '30'
 
   constructor (
