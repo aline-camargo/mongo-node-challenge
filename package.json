@@ -12,6 +12,7 @@
     "start-dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
     "build": "rimraf ./build && tsc",
     "tsc": "tsc",
+    "ts-node": "ts-node",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
