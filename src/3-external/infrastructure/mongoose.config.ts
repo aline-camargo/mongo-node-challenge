@@ -11,11 +11,7 @@ export class Mongoose {
   async init () : Promise<void> {
     console.log('Initializing db')
     try {
-      await connect(process.env.MONGO_CONNECTION_URI || this.localConfiguration.url, {
-        user: process.env.MONGO_USER || this.localConfiguration.user,
-        pass: process.env.MONGO_PASSWORD || this.localConfiguration.pass,
-        dbName: process.env.MONGO_DB_NAME || this.localConfiguration.dbName
-      })
+      await connect(process.env.MONGO_CONNECTION_URI || this.localConfiguration.url)
     } catch (error) {
       console.log('Error connecting to data source: ', error)
     }
