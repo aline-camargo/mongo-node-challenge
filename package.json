@@ -8,11 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && ts-node -r tsconfig-paths/register build/server.js",
+    "start": "npm run build && npx ts-node -r tsconfig-paths/register build/server.js",
     "start-dev": "ts-node-dev -r tsconfig-paths/register src/server.ts",
-    "build": "rimraf ./build && tsc",
-    "tsc": "tsc",
-    "ts-node": "ts-node",
+    "build": "rimraf ./build && npx tsc",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
