@@ -18,7 +18,7 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": [],
     "lib": ["es2015"],
     "target": "es6",
     "module": "commonjs",
