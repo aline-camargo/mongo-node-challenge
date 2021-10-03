@@ -20,6 +20,9 @@
     "moduleResolution": "node",
     "types": ["node"],
     "lib": ["es2015"],
+    "compilerOptions": {
+      "types": ["node"]
+    },
     "target": "es6",
     "module": "commonjs",
     "rootDir": "src",
