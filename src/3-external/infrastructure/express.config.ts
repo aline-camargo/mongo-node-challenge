@@ -11,7 +11,7 @@ import { IGetUser, IGetUserSymbol } from '#external/api/getUser/iGetUser'
 @injectable()
 export class Express {
   public readonly app = express()
-  private readonly port = process.env.SERVER_PORT || 3000
+  private readonly port = process.env.PORT || 3000
 
   constructor (
     private readonly diContainer = new DIConatiner()
