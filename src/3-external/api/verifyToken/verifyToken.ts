@@ -38,5 +38,3 @@ export class VerifyToken implements IVerifyToken {
     }
   }
 }
-
-export const VerifyTokenSymbol = Symbol.for('VerifyToken')

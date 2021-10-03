@@ -42,5 +42,3 @@ export class SignUp implements ISignUp {
     }
   }
 }
-
-export const SignUpSymbol = Symbol.for('SignUp')

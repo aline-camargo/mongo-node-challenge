@@ -1,14 +1,17 @@
+import moment from 'moment-timezone'
 import { OutputVerifyToken } from '#application/dto/verifyToken/output'
 import { ITokenService, ITokenServiceSymbol } from '#application/services/iTokenService'
 import { IErrors, IErrorsSymbol } from '#domain/error/iErrors'
 import { inject, injectable } from 'inversify'
 import { IVerifyTokenUseCase } from './iVerifyTokenUseCase'
-import moment from 'moment-timezone'
 import { IUserRepository, IUserRepositorySymbol } from '#application/repositories/iUserRepository'
 import { User } from '#domain/entities/user'
 
 @injectable()
 export class VerifyTokenUseCase implements IVerifyTokenUseCase {
+
+  private readonly toleranceTime = process.env.TOKEN_TOLERANCE_AMOUNT || '30'
+
   constructor (
     @inject(ITokenServiceSymbol)
     private readonly tokenService: ITokenService,
@@ -43,7 +46,7 @@ export class VerifyTokenUseCase implements IVerifyTokenUseCase {
     if (user && user.ultimo_login) {
       const now = moment()
       const lastLoginMoment = moment(user.ultimo_login)
-      result = now < lastLoginMoment.add(30, 'minutes')
+      result = now < lastLoginMoment.add(+this.toleranceTime, 'minutes')
     }
     return result
   }

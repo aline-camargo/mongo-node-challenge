@@ -4,7 +4,7 @@ import { ITokenService } from '#application/services/iTokenService'
 
 @injectable()
 export class TokenService implements ITokenService {
-  private readonly privateKey = '17630c07-0e11-4ef9-a22b-6b0419accb9a'
+  private readonly privateKey = process.env.JWT_PRIVATE_KEY || 'secret'
 
   async generateToken (id: string, name: string, email: string) : Promise<string> {
     return jwt.sign({ id, name, email }, this.privateKey)

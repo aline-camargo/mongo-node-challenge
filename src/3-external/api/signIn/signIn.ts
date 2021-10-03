@@ -43,4 +43,3 @@ export class SignIn implements ISignIn {
   }
 }
 
-export const SignInSymbol = Symbol.for('SignIn')
